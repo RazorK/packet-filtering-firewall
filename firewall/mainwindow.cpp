@@ -3,12 +3,34 @@
 #include <QDebug>
 #include <QTableWidget>
 #include <QTableWidgetItem>
+#include <QSqlQueryModel>
+#include <QSqlTableModel>
+#include <QSqlRelationalTableModel>
+#include <QTableView>
+#include <QDebug>
+#include <QMessageBox>
+#include <QSqlError>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    //fix the size of mainwindow
+    //setFixedSize(this->width(),this->height());
+
+    //load in the rule data from db
+    model = new QSqlTableModel(this);
+    model->setTable("rule");
+    model->select();
+
+    // set the edit policy
+    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    ui->tableView->setModel(model);
+
+    //TODO: set the column width
+    ui->tableView->setColumnWidth(0,30);
 }
 
 MainWindow::~MainWindow()
