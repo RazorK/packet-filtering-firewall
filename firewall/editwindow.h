@@ -2,7 +2,9 @@
 #define EDITWINDOW_H
 
 #include <QDialog>
+#include "myipaddredit.h"
 class QSqlTableModel;
+class MyIpAddrEdit;
 
 namespace Ui {
 class EditWindow;
@@ -22,6 +24,8 @@ private slots:
 private:
     Ui::EditWindow *ui;
     QSqlTableModel *model;
+    MyIpAddrEdit *sourceEdit;
+    MyIpAddrEdit *destEdit;
 };
 
 #endif // EDITWINDOW_H

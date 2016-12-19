@@ -109,7 +109,7 @@
           <item>
            <widget class="QPushButton" name="infoButton">
             <property name="text">
-             <string>Show Package Info</string>
+             <string>Hide Package Info</string>
             </property>
             <property name="checkable">
              <bool>true</bool>

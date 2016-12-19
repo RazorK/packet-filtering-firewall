@@ -90,7 +90,7 @@ void MainWindow::on_pushButton_toggled(bool checked)
 
 void MainWindow::on_infoButton_toggled(bool checked)
 {
-    ui->textEdit->setVisible(checked);
-    if(checked) ui->infoButton->setText("Hide Package Info");
-    else ui->infoButton->setText("Show Package Info");
+    ui->textEdit->setVisible(!checked);
+    if(checked) ui->infoButton->setText("Show Package Info");
+    else ui->infoButton->setText("Hide Package Info");
 }

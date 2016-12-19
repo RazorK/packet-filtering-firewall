@@ -1,5 +1,6 @@
 #include "editwindow.h"
 #include "ui_editwindow.h"
+#include "myipaddredit.h"
 #include <QDebug>
 #include <QSqlRecord>
 #include <QTableWidget>
@@ -23,6 +24,12 @@ EditWindow::EditWindow(QWidget *parent) :
     ui->passComboBox->addItem("False");
     ui->passComboBox->addItem("True");
 
+    //try ipedit
+    //MyIpAddrEdit *ipAddr = new MyIpAddrEdit();
+    sourceEdit = new MyIpAddrEdit(this);
+    sourceEdit->settext("127.0.0.1");
+    ui->formLayout->addRow("IPtest",sourceEdit);
+
     //sql part
     model = new QSqlTableModel(this);
     model->setTable("rule");
@@ -39,7 +46,7 @@ void EditWindow::on_buttonBox_accepted()
     //get row number
     int rowNum = model->rowCount();
 
-    //create record
+    //create record && insert to the db
     QSqlRecord record = model->record();
     record.setValue("id",rowNum+1);
     record.setValue("SourceIP",ui->sourceIPLineEdit->text());
@@ -48,6 +55,8 @@ void EditWindow::on_buttonBox_accepted()
     record.setValue("DestinationPort",ui->destinationPortLineEdit->text().toInt());
     record.setValue("Pass",(ui->passComboBox->currentText()=="True"?1:0));
     model->insertRecord(rowNum,record);
+
+    qDebug()<<sourceEdit->text();
 
     accept();
 }
