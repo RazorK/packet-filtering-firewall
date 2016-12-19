@@ -20,15 +20,25 @@ EditWindow::EditWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //set value for pass selection
-    ui->passComboBox->addItem("False");
-    ui->passComboBox->addItem("True");
-
     //try ipedit
-    //MyIpAddrEdit *ipAddr = new MyIpAddrEdit();
     sourceEdit = new MyIpAddrEdit(this);
     sourceEdit->settext("127.0.0.1");
-    ui->formLayout->addRow("IPtest",sourceEdit);
+    ui->formLayout->addRow("SourceIP",sourceEdit);
+
+    destinationEdit = new MyIpAddrEdit(this);
+    destinationEdit->settext("127.0.0.1");
+    ui->formLayout->addRow("DestinationIP",destinationEdit);
+
+    sourcePortLineEdit = new QLineEdit();
+    ui->formLayout->addRow("SourceProt",sourcePortLineEdit);
+
+    destinationPortLineEdit = new QLineEdit(this);
+    ui->formLayout->addRow("DestinationPort",destinationPortLineEdit);
+
+    passComboBox = new QComboBox(this);
+    ui->formLayout->addRow("Pass",passComboBox);
+    passComboBox->addItem("False");
+    passComboBox->addItem("True");
 
     //sql part
     model = new QSqlTableModel(this);
@@ -49,14 +59,14 @@ void EditWindow::on_buttonBox_accepted()
     //create record && insert to the db
     QSqlRecord record = model->record();
     record.setValue("id",rowNum+1);
-    record.setValue("SourceIP",ui->sourceIPLineEdit->text());
-    record.setValue("DestinationIP",ui->destinationIPLineEdit->text());
-    record.setValue("SourcePort",ui->sourcePortLineEdit->text().toInt());
-    record.setValue("DestinationPort",ui->destinationPortLineEdit->text().toInt());
-    record.setValue("Pass",(ui->passComboBox->currentText()=="True"?1:0));
+    record.setValue("SourceIP",sourceEdit->text());
+    record.setValue("DestinationIP",destinationEdit->text());
+    record.setValue("SourcePort",sourcePortLineEdit->text().toInt());
+    record.setValue("DestinationPort",destinationPortLineEdit->text().toInt());
+    record.setValue("Pass",(passComboBox->currentText()=="True"?1:0));
     model->insertRecord(rowNum,record);
 
-    qDebug()<<sourceEdit->text();
+    //qDebug()<<sourceEdit->text();
 
     accept();
 }

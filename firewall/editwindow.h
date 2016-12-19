@@ -2,9 +2,12 @@
 #define EDITWINDOW_H
 
 #include <QDialog>
+#include <QComboBox>
+#include <QLineEdit>
 #include "myipaddredit.h"
 class QSqlTableModel;
 class MyIpAddrEdit;
+//class QLineEdit;
 
 namespace Ui {
 class EditWindow;
@@ -25,7 +28,11 @@ private:
     Ui::EditWindow *ui;
     QSqlTableModel *model;
     MyIpAddrEdit *sourceEdit;
-    MyIpAddrEdit *destEdit;
+    MyIpAddrEdit *destinationEdit;
+    QLineEdit *sourcePortLineEdit;
+    QLineEdit *destinationPortLineEdit;
+    QComboBox *passComboBox;
+
 };
 
 #endif // EDITWINDOW_H
