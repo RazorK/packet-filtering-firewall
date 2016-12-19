@@ -29,11 +29,17 @@ MainWindow::MainWindow(QWidget *parent) :
     model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     ui->tableView->setModel(model);
 
-    //TODO: set the column width
-    ui->tableView->setColumnWidth(0,30);
+    //set the column width
+    ui->tableView->setColumnWidth(0,38);
+    ui->tableView->setColumnWidth(1,111);
+    ui->tableView->setColumnWidth(2,111);
+    ui->tableView->setColumnWidth(3,74);
+    ui->tableView->setColumnWidth(4,91);
+    ui->tableView->setColumnWidth(5,54);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
