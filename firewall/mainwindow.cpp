@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "editwindow.h"
 #include <QDebug>
 #include <QTableWidget>
 #include <QTableWidgetItem>
@@ -36,6 +37,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableView->setColumnWidth(3,74);
     ui->tableView->setColumnWidth(4,91);
     ui->tableView->setColumnWidth(5,54);
+
+    //only select by rows
+    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 }
 
 MainWindow::~MainWindow()
@@ -43,3 +47,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::on_addButton_clicked()
+{
+    EditWindow *ew = new EditWindow(this);
+    ew->show();
+}
