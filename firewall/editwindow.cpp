@@ -1,6 +1,7 @@
 #include "editwindow.h"
 #include "ui_editwindow.h"
 #include "myipaddredit.h"
+#include <QIntValidator>
 #include <QDebug>
 #include <QSqlRecord>
 #include <QTableWidget>
@@ -29,12 +30,20 @@ EditWindow::EditWindow(QWidget *parent) :
     destinationEdit->settext("127.0.0.1");
     ui->formLayout->addRow("DestinationIP",destinationEdit);
 
+
+    //port validator
+    QValidator *vali =new QIntValidator(0,65535,this);
+
+    //port edit
     sourcePortLineEdit = new QLineEdit();
+    sourcePortLineEdit->setValidator(vali);
     ui->formLayout->addRow("SourceProt",sourcePortLineEdit);
 
     destinationPortLineEdit = new QLineEdit(this);
+    destinationPortLineEdit->setValidator(vali);
     ui->formLayout->addRow("DestinationPort",destinationPortLineEdit);
 
+    //pass edit
     passComboBox = new QComboBox(this);
     ui->formLayout->addRow("Pass",passComboBox);
     passComboBox->addItem("False");
