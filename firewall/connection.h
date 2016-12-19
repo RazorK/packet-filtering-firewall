@@ -17,12 +17,12 @@ static bool createConnection()
     QSqlQuery query;
     //  create the table for rules
     query.exec(QString("create table rule (id int primary key, "
-               "SouceIP varchar, DestinationIP varchar, SourcePort int, DestinationPort int,"
+               "SourceIP varchar, DestinationIP varchar, SourcePort int, DestinationPort int,"
                "Pass bool)"));
 
     // insert example rules
-    query.exec(QString("insert into rule values(1, '59.78.26.140','59.78.26.141','80','80', False)"));
-    query.exec(QString("insert into rule values(2, '59.78.26.141','59.78.26.140','80','80', False)"));
+    query.exec(QString("insert into rule values(1, '59.78.26.140','59.78.26.141','80','80', 0)"));
+    query.exec(QString("insert into rule values(2, '59.78.26.141','59.78.26.140','80','80', 0)"));
     return true;
 }
 

@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "editwindow.h"
+
+#include <QDialog>
 #include <QDebug>
 #include <QTableWidget>
 #include <QTableWidgetItem>
@@ -19,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     //fix the size of mainwindow
-    //setFixedSize(this->width(),this->height());
+    setFixedSize(this->width(),this->height());
 
     //load in the rule data from db
     model = new QSqlTableModel(this);
@@ -49,6 +51,26 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_addButton_clicked()
 {
-    EditWindow *ew = new EditWindow(this);
-    ew->show();
+    EditWindow ew;
+    // refresh the tableview
+    if(ew.exec()==QDialog::Accepted){
+        model->setTable("rule");
+        model->select();
+    }
+}
+
+void MainWindow::on_deleteButton_clicked()
+{
+    // get row num
+    int curRow = ui->tableView->currentIndex().row();
+    // delete
+    model->removeRow(curRow);
+    int ok = QMessageBox::warning(this,"Deleting!",
+                  tr("Deleting the selected rule! Are you sure?"),QMessageBox::Yes, QMessageBox::No);
+    if(ok == QMessageBox::No)
+    {
+        model->revertAll();
+    } else {
+        model->submitAll();
+    }
 }
