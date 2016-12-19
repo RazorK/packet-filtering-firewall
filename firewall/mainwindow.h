@@ -21,6 +21,10 @@ private slots:
 
     void on_deleteButton_clicked();
 
+    void on_pushButton_toggled(bool checked);
+
+    void on_infoButton_toggled(bool checked);
+
 private:
     Ui::MainWindow *ui;
     QSqlTableModel *model;

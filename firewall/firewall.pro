@@ -15,11 +15,15 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    editwindow.cpp
+    editwindow.cpp \
+    myippartlineedit.cpp \
+    myipaddredit.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
-    editwindow.h
+    editwindow.h \
+    myippartlineedit.h \
+    myipaddredit.h
 
 FORMS    += mainwindow.ui \
     editwindow.ui

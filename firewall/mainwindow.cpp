@@ -21,11 +21,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     //fix the size of mainwindow
-    setFixedSize(this->width(),this->height());
+    //setFixedSize(this->width(),this->height());
 
     //load in the rule data from db
     model = new QSqlTableModel(this);
     model->setTable("rule");
+    model->setSort(0, Qt::AscendingOrder);
     model->select();
 
     // set the edit policy
@@ -42,6 +43,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //only select by rows
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    //hide textedit
+    ui->textEdit->setReadOnly(1);
+    //ui->textEdit->hide();
 }
 
 MainWindow::~MainWindow()
@@ -55,6 +60,7 @@ void MainWindow::on_addButton_clicked()
     // refresh the tableview
     if(ew.exec()==QDialog::Accepted){
         model->setTable("rule");
+        model->setSort(0, Qt::AscendingOrder);
         model->select();
     }
 }
@@ -73,4 +79,18 @@ void MainWindow::on_deleteButton_clicked()
     } else {
         model->submitAll();
     }
+}
+
+void MainWindow::on_pushButton_toggled(bool checked)
+{
+    //TODO: Add time filter logic
+    if(checked) ui->pushButton->setText("Stop Time Filter");
+    else ui->pushButton->setText("Start Time Filter");
+}
+
+void MainWindow::on_infoButton_toggled(bool checked)
+{
+    ui->textEdit->setVisible(checked);
+    if(checked) ui->infoButton->setText("Hide Package Info");
+    else ui->infoButton->setText("Show Package Info");
 }
