@@ -73,7 +73,7 @@ void MainWindow::on_deleteButton_clicked()
     // delete
     model->removeRow(curRow);
     int ok = QMessageBox::warning(this,"Deleting!",
-                  tr("Deleting the selected rule! Are you sure?"),QMessageBox::Yes, QMessageBox::No);
+                                  tr("Deleting the selected rule! Are you sure?"),QMessageBox::Yes, QMessageBox::No);
     if(ok == QMessageBox::No)
     {
         model->revertAll();
@@ -99,10 +99,12 @@ void MainWindow::on_infoButton_toggled(bool checked)
 void MainWindow::on_startButtion_toggled(bool checked)
 {
     //TODO: add thread logic
-    if(checked) ui->startButtion->setText("Stop System");
+    if(checked)
+        ui->startButtion->setText("Stop System");
     else ui->startButtion->setText("Start System");
 
-    if(checked) filter.start();
+    if(checked)
+        filter.start();
     else
     {
         if(filter.isRunning()){

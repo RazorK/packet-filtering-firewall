@@ -12,6 +12,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = firewall
 TEMPLATE = app
 
+LIBS += -L/usr/local/lib -lnetfilter_queue
+
 
 SOURCES += main.cpp\
         mainwindow.cpp \
