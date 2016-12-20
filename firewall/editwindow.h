@@ -32,6 +32,7 @@ private:
     QLineEdit *sourcePortLineEdit;
     QLineEdit *destinationPortLineEdit;
     QComboBox *passComboBox;
+    QComboBox *protoComoBox;
 
 };
 

@@ -1,6 +1,7 @@
 #include "editwindow.h"
 #include "ui_editwindow.h"
 #include "myipaddredit.h"
+
 #include <QIntValidator>
 #include <QDebug>
 #include <QSqlRecord>
@@ -29,6 +30,14 @@ EditWindow::EditWindow(QWidget *parent) :
     destinationEdit = new MyIpAddrEdit(this);
     destinationEdit->settext("127.0.0.1");
     ui->formLayout->addRow("DestinationIP",destinationEdit);
+
+    //protocol select
+    protoComoBox = new QComboBox(this);
+    ui->formLayout->addRow("Protocol",protoComoBox);
+    protoComoBox->addItem("all");
+    protoComoBox->addItem("tcp");
+    protoComoBox->addItem("icmp");
+    protoComoBox->addItem("udp");
 
 
     //port validator
@@ -70,11 +79,11 @@ void EditWindow::on_buttonBox_accepted()
     record.setValue("id",rowNum+1);
     record.setValue("SourceIP",sourceEdit->text());
     record.setValue("DestinationIP",destinationEdit->text());
+    record.setValue("Protocol",protoComoBox->currentText());
     record.setValue("SourcePort",sourcePortLineEdit->text().toInt());
     record.setValue("DestinationPort",destinationPortLineEdit->text().toInt());
     record.setValue("Pass",(passComboBox->currentText()=="True"?1:0));
     model->insertRecord(rowNum,record);
-
     //qDebug()<<sourceEdit->text();
 
     accept();
