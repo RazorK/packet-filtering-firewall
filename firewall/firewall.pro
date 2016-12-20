@@ -17,13 +17,15 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     editwindow.cpp \
     myippartlineedit.cpp \
-    myipaddredit.cpp
+    myipaddredit.cpp \
+    filterthread.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
     editwindow.h \
     myippartlineedit.h \
-    myipaddredit.h
+    myipaddredit.h \
+    filterthread.h
 
 FORMS    += mainwindow.ui \
     editwindow.ui

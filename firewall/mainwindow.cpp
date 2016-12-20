@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     //fix the size of mainwindow
-    //setFixedSize(this->width(),this->height());
+    setFixedSize(this->width(),this->height());
 
     //load in the rule data from db
     model = new QSqlTableModel(this);
@@ -93,4 +93,19 @@ void MainWindow::on_infoButton_toggled(bool checked)
     ui->textEdit->setVisible(!checked);
     if(checked) ui->infoButton->setText("Show Package Info");
     else ui->infoButton->setText("Hide Package Info");
+}
+
+void MainWindow::on_startButtion_toggled(bool checked)
+{
+    //TODO: add thread logic
+    if(checked) ui->startButtion->setText("Stop System");
+    else ui->startButtion->setText("Start System");
+
+    if(checked) filter.start();
+    else
+    {
+        if(filter.isRunning()){
+            filter.stop();
+        }
+    }
 }

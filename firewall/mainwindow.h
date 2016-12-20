@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "filterthread.h"
+
 class QSqlTableModel;
 
 namespace Ui {
@@ -25,9 +27,12 @@ private slots:
 
     void on_infoButton_toggled(bool checked);
 
+    void on_startButtion_toggled(bool checked);
+
 private:
     Ui::MainWindow *ui;
     QSqlTableModel *model;
+    FilterThread filter;
 };
 
 #endif // MAINWINDOW_H
