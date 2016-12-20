@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 
-    //TODO: set the iptables
+    //set the iptables
     QProcess ipProcess;
     QString program = "iptables";
     QStringList arguments;
@@ -31,11 +31,13 @@ int main(int argc, char *argv[])
     w.show();
 
     a.exec();
-    //TODO:reset the iptables
+
+    //reset the iptables
     QStringList finArguments;
     finArguments<<"-D"<<"OUTPUT"<<"1";
     ipProcess.start("iptables",finArguments);
     ipProcess.waitForFinished();
     qDebug()<<"finish reset the iptables";
+
     return 1;
 }
