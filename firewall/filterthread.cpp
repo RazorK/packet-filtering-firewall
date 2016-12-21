@@ -1,10 +1,90 @@
 #include "filterthread.h"
 #include <QDebug>
 
+#include <QString>
+#include <QSqlQuery>
+#include <QSqlDatabase>
+#include <QVariant>
+#include <QSqlDriver>
+#include <QSqlRecord>
+#include <QSqlField>
+#include <QSqlError>
+
+
 FilterThread::FilterThread(QObject *parent) :
     QThread(parent)
 {
     enable_flag = 1;
+}
+
+//icmp query and process
+int icmpQuery(char *srcstr, char *deststr,QString ippro)
+{
+    QSqlQuery query;
+    query.exec(QString("select * from rule where (SourceIP='%1' or SourceIP='all')"
+                       "and (DestinationIP='%2' or DestinationIP = 'all') and "
+                       "(protocol = 'all' or protocol = '%3') and Pass = 0")
+               .arg(srcstr).arg(deststr).arg(ippro));
+
+    int dropflag = 0;
+    while(query.next())
+    {
+        dropflag = 1;
+        qDebug()<<"Found match in DB";
+        qDebug()<<query.value(0).toInt()<<endl
+               <<query.value(1).toString()<<endl
+              <<query.value(2).toString()<<endl
+             <<query.value(3).toString()<<endl
+            <<query.value(4).toString()<<endl
+           <<query.value(5).toString()<<endl
+          <<query.value(6).toString()<<endl;
+    }
+    if(dropflag == 1)
+    {
+        qDebug()<<"drop ICMP"<<endl;
+        return NF_DROP;
+    }
+    else
+    {
+        qDebug()<<"accept ICMP"<<endl;
+        return NF_ACCEPT;
+    }
+}
+
+//tcp query and process
+int tcpudpQuery(char *srcstr, char *deststr,QString ippro,int sourceP,int destP)
+{
+    QSqlQuery query;
+    query.exec(QString("select * from rule where (SourceIP='%1' or SourceIP='all')"
+                       "and (DestinationIP='%2' or DestinationIP = 'all') and "
+                       "(Protocol = 'all' or Protocol = '%3') and"
+                       "(SourcePort = 'all' or SourcePort = '%4') and"
+                       "(DestinationPort = 'all' or DestinationPort = '%5')and Pass = 0")
+               .arg(srcstr).arg(deststr).arg(ippro).arg(sourceP).arg(destP));
+
+    int dropflag = 0;
+    while(query.next())
+    {
+        dropflag = 1;
+        qDebug()<<"Found match in DB";
+        qDebug()<<query.value(0).toInt()<<endl
+               <<query.value(1).toString()<<endl
+              <<query.value(2).toString()<<endl
+             <<query.value(3).toString()<<endl
+            <<query.value(4).toString()<<endl
+           <<query.value(5).toString()<<endl
+          <<query.value(6).toString()<<endl;
+    }
+    if(dropflag == 1)
+    {
+        qDebug()<<"drop "<<ippro<<endl;
+        return NF_DROP;
+    }
+    else
+    {
+        qDebug()<<"accept "<<ippro<<endl;
+        return NF_ACCEPT;
+    }
 }
 
 // filter process referring to one package
@@ -18,6 +98,7 @@ int callback(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg, struct nfq_data *n
     int pdata_len;
     int dealmethod = NF_ACCEPT;
     char srcstr[32],deststr[32];
+    QString ippro;
     ph = nfq_get_msg_packet_hdr(nfa);
     if (ph == NULL)
         return 1;
@@ -32,26 +113,42 @@ int callback(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg, struct nfq_data *n
     inet_ntop(AF_INET,&(piphdr->saddr),srcstr,32);
     inet_ntop(AF_INET,&(piphdr->daddr),deststr,32);
 
+
+    //output part
     //cout basic information
+    qDebug()<<"--------------------------PACKAGE DETECTED-------------------------------";
     qDebug()<<"get a packet:"<< srcstr<<"-> "<<deststr<<"\n";
     qDebug()<<"protocol info:"<<piphdr->protocol<<endl;
 
     //port cout
     if(piphdr->protocol == 6)
     {
+        ippro = "tcp";
         struct tcphdr *ptcphdr;
         //printf("<0>This is an tcp packet.\n");
         ptcphdr = (struct tcphdr *)((char *)piphdr +(piphdr->ihl*4));
         qDebug()<<"TCP protocol detected! source:"<<ptcphdr->source<<"dest:"<<ptcphdr->dest<<endl;
+        dealmethod = tcpudpQuery(srcstr,deststr,ippro,ptcphdr->source,ptcphdr->dest);
     }
 
     if(piphdr->protocol == 17)
     {
+        ippro = "udp";
         struct udphdr *pudphdr;
         //printf("<0>This is an udp packet.\n");
         pudphdr = (struct udphdr *)((char *)piphdr +(piphdr->ihl*4));
         qDebug()<<"UDP protocol detected! source:"<<pudphdr->source<<"dest:"<<pudphdr->dest<<endl;
+        dealmethod = tcpudpQuery(srcstr,deststr,ippro,pudphdr->source,pudphdr->dest);
     }
+
+    if(piphdr->protocol == 1)
+    {
+        ippro = "icmp";
+        qDebug()<<"ICMP protocol detected!"<<endl;
+        dealmethod = icmpQuery(srcstr,deststr,ippro);
+    }
+
+    qDebug()<<"-------------------------------------------------------------------------";
     return nfq_set_verdict(qh, id, dealmethod, 0, NULL);
 }
 

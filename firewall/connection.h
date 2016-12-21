@@ -22,8 +22,8 @@ static bool createConnection()
                        "Pass bool)"));
 
     // insert example rules
-    query.exec(QString("insert into rule values(1, '59.78.26.140','59.78.26.141', 'all','80','80', 0)"));
-    query.exec(QString("insert into rule values(2, '59.78.26.141','59.78.26.140', 'all','80','80', 0)"));
+    query.exec(QString("insert into rule values(1, '192.168.158.136','111.13.100.92', 'all','80','80', 0)"));
+    query.exec(QString("insert into rule values(2, '127.0.0.1','127.0.0.1', 'all','all','all', 0)"));
     return true;
 }
 

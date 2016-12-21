@@ -34,13 +34,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableView->setModel(model);
 
     //set the column width
-    ui->tableView->setColumnWidth(0,35);
-    ui->tableView->setColumnWidth(1,89);
-    ui->tableView->setColumnWidth(2,89);
+    ui->tableView->setColumnWidth(0,30);
+    ui->tableView->setColumnWidth(1,106);
+    ui->tableView->setColumnWidth(2,106);
     ui->tableView->setColumnWidth(3,50);
     ui->tableView->setColumnWidth(4,74);
     ui->tableView->setColumnWidth(5,91);
-    ui->tableView->setColumnWidth(6,51);
+    ui->tableView->setColumnWidth(6,40);
 
     //only select by rows
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
