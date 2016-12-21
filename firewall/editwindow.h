@@ -24,6 +24,14 @@ public:
 private slots:
     void on_buttonBox_accepted();
 
+    void on_checkBox_3_stateChanged(int arg1);
+
+    void on_checkBox_4_stateChanged(int arg1);
+
+    void on_checkBox_stateChanged(int arg1);
+
+    void on_checkBox_2_stateChanged(int arg1);
+
 private:
     Ui::EditWindow *ui;
     QSqlTableModel *model;

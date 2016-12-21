@@ -17,6 +17,7 @@ public:
     void settext(const QString &text);
     QString text();
     void setStyleSheet(const QString &styleSheet);
+    //void setEnable(int);
 
 signals:
     void textchanged(const QString& text);

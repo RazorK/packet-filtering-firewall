@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>454</width>
     <height>300</height>
    </rect>
   </property>
@@ -34,11 +34,63 @@
     <rect>
      <x>70</x>
      <y>60</y>
-     <width>271</width>
+     <width>221</width>
      <height>146</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout"/>
+  </widget>
+  <widget class="QCheckBox" name="checkBox">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>60</y>
+     <width>91</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>All Source IP</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkBox_2">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>80</y>
+     <width>78</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>All Dest IP</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkBox_3">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>130</y>
+     <width>101</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>All Source Port</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkBox_4">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>160</y>
+     <width>91</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>All Dest Port</string>
+   </property>
   </widget>
  </widget>
  <resources/>

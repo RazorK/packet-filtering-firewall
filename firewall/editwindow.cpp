@@ -22,6 +22,7 @@ EditWindow::EditWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    setFixedSize(this->width(),this->height());
     //try ipedit
     sourceEdit = new MyIpAddrEdit(this);
     sourceEdit->settext("127.0.0.1");
@@ -46,7 +47,7 @@ EditWindow::EditWindow(QWidget *parent) :
     //port edit
     sourcePortLineEdit = new QLineEdit();
     sourcePortLineEdit->setValidator(vali);
-    ui->formLayout->addRow("SourceProt",sourcePortLineEdit);
+    ui->formLayout->addRow("SourcePort",sourcePortLineEdit);
 
     destinationPortLineEdit = new QLineEdit(this);
     destinationPortLineEdit->setValidator(vali);
@@ -77,14 +78,63 @@ void EditWindow::on_buttonBox_accepted()
     //create record && insert to the db
     QSqlRecord record = model->record();
     record.setValue("id",rowNum+1);
-    record.setValue("SourceIP",sourceEdit->text());
-    record.setValue("DestinationIP",destinationEdit->text());
+    if(ui->checkBox->checkState()==2)
+        record.setValue("SourceIP","all");
+    else
+        record.setValue("SourceIP",sourceEdit->text());
+
+    if(ui->checkBox_2->checkState()==2)
+        record.setValue("DestinationIP","all");
+    else
+        record.setValue("DestinationIP",destinationEdit->text());
+
     record.setValue("Protocol",protoComoBox->currentText());
-    record.setValue("SourcePort",sourcePortLineEdit->text().toInt());
-    record.setValue("DestinationPort",destinationPortLineEdit->text().toInt());
+
+    if(ui->checkBox_3->checkState()==2)
+        record.setValue("SourcePort","all");
+    else
+        record.setValue("SourcePort",sourcePortLineEdit->text().toInt());
+
+    if(ui->checkBox_4->checkState()==2)
+        record.setValue("DestinationPort","all");
+    else
+        record.setValue("DestinationPort",destinationPortLineEdit->text().toInt());
+
     record.setValue("Pass",(passComboBox->currentText()=="True"?1:0));
     model->insertRecord(rowNum,record);
     //qDebug()<<sourceEdit->text();
 
     accept();
+}
+
+void EditWindow::on_checkBox_3_stateChanged(int arg1)
+{
+    if(arg1==0)
+        sourcePortLineEdit->setEnabled(1);
+    else if(arg1==2)
+        sourcePortLineEdit->setEnabled(0);
+}
+
+void EditWindow::on_checkBox_4_stateChanged(int arg1)
+{
+    if(arg1==0)
+        destinationPortLineEdit->setEnabled(1);
+    else if(arg1==2)
+        destinationPortLineEdit->setEnabled(0);
+}
+
+void EditWindow::on_checkBox_stateChanged(int arg1)
+{
+    if(arg1==0)
+        sourceEdit->setEnabled(1);
+    else if(arg1==2)
+        sourceEdit->setEnabled(0);
+}
+
+void EditWindow::on_checkBox_2_stateChanged(int arg1)
+{
+    if(arg1==0)
+        destinationEdit->setEnabled(1);
+    else if(arg1==2)
+        destinationEdit->setEnabled(0);
 }
