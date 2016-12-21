@@ -41,17 +41,8 @@ protected:
 
 
 private:
-    volatile bool stopped;
+    volatile bool enable_flag;
 
-    int enable_flag;                    //保存用户输入
-    unsigned int controlled_protocol; //在getpara 用于保存用户输入protocol
-    unsigned short controlled_srcport;//src port
-    unsigned short controlled_dstport;
-    unsigned int controlled_saddr;
-    unsigned int controlled_daddr;
-
-    //function
-    //int callback(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg, struct nfq_data *nfa, void *data);
 
 signals:
 

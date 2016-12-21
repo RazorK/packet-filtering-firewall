@@ -100,15 +100,16 @@ void MainWindow::on_startButtion_toggled(bool checked)
 {
     //TODO: add thread logic
     if(checked)
-        ui->startButtion->setText("Stop System");
-    else ui->startButtion->setText("Start System");
-
-    if(checked)
-        filter.start();
-    else
     {
+        //qDebug()<<"start pressed"<<endl;
+        filter.start();
+        ui->startButtion->setText("Stop System");
+    }
+    else {
+        ui->startButtion->setText("Start System");
         if(filter.isRunning()){
             filter.stop();
         }
     }
+
 }
