@@ -105,17 +105,35 @@ void MainWindow::on_startButtion_toggled(bool checked)
         qDebug()<<"finish iptables set process";
     }
     else {
+        ui->startButtion->setText("Start System");
+        if(filter.isRunning()){
+            filter.stop();
+        }
+        //try send package to end the recv proceed
+        qDebug()<<"start sweep sending";
+        QUdpSocket *sender;
+        sender = new QUdpSocket(this);
+        QByteArray datagram = "hello";
+        sender->writeDatagram(datagram.data(),datagram.size(),QHostAddress::Broadcast,45454);
+        qDebug()<<"finish sweep sending";
+
+        /*
+        qDebug()<<"try send a package";
+        QStringList secArguments;
+        secArguments<<"www.baidu,com";
+        ipProcess.start("ping",secArguments);
+        //ipProcess.waitForFinished();
+        qDebug()<<"finish sending";
+        */
         //reset the iptables
         QStringList finArguments;
         finArguments<<"-D"<<"OUTPUT"<<"1";
         ipProcess.start("iptables",finArguments);
         ipProcess.waitForFinished();
         qDebug()<<"finish reset the iptables";
+        //change the flag
 
-        ui->startButtion->setText("Start System");
-        if(filter.isRunning()){
-            filter.stop();
-        }
+
     }
 }
 

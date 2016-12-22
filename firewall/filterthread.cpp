@@ -154,6 +154,9 @@ int callback(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg, struct nfq_data *n
 
 void FilterThread::run()
 {
+    qDebug()<<"reset the flag"<<endl;
+    enable_flag = 1;
+
     qDebug()<<"start running"<<endl;
     static int fd;//使用netfilter_queue会使用到的变量
     static struct nfq_handle *h;//使用netfilter_queue会使用到的变量
@@ -162,33 +165,33 @@ void FilterThread::run()
 
     char buf[1600];
     int length;
-    qDebug()<<"part 1"<<endl;
+
     //	printf("opening library handle\n");
     h = nfq_open();
     if (!h) {
         fprintf(stderr, "error during nfq_open()\n");
         exit(1);
     }
-    qDebug()<<"part 2"<<endl;
+
     //	printf("unbinding existing nf_queue handler for AF_INET (if any)\n");
     if (nfq_unbind_pf(h, AF_INET) < 0) {
         fprintf(stderr, "already nfq_unbind_pf()\n");
         exit(1);
     }
-    qDebug()<<"part 3"<<endl;
+
     //	printf("binding nfnetlink_queue as nf_queue handler for AF_INET\n");
     if (nfq_bind_pf(h, AF_INET) < 0) {
         fprintf(stderr, "error during nfq_bind_pf()\n");
         exit(1);
     }
-    qDebug()<<"part 4"<<endl;
+
     //	printf("binding this socket to queue '0'\n");
     qh = nfq_create_queue(h,0, &callback, NULL);
     if (!qh) {
         fprintf(stderr, "error during nfq_create_queue()\n");
         exit(1);
     }
-    qDebug()<<"part 5"<<endl;
+
     //	printf("setting copy_packet mode\n");
     if (nfq_set_mode(qh, NFQNL_COPY_PACKET, 0xffff) < 0) {
         fprintf(stderr, "can't set packet_copy mode\n");
@@ -198,7 +201,6 @@ void FilterThread::run()
     nh = nfq_nfnlh(h);
     fd = nfnl_fd(nh);
     //qDebug()<<"enter circulation"<<endl;
-    qDebug()<<"part 6"<<endl;
     while(1)
     {
         if(enable_flag == 0)
@@ -208,16 +210,15 @@ void FilterThread::run()
         }
         qDebug()<<"doing circulation"<<endl;
         length=recv(fd,buf,1600,0);//此处完成收包
+        qDebug()<<"wait?"<<endl;
         nfq_handle_packet(h, buf,length);//完成发包的真正函数
     }
 
-    //qDebug()<<"finish circulation"<<endl;
+    qDebug()<<"finish circulation"<<endl;
     nfq_destroy_queue(qh);
     nfq_close(h);
 
     qDebug()<<"run process stoped"<<endl;
-    //qDebug()<<"reset the flag"<<endl;
-    enable_flag = 1;
 }
 
 void FilterThread::stop()

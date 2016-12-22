@@ -14,6 +14,7 @@
 #include <QMessageBox>
 #include <QSqlError>
 #include <QMainWindow>
+#include <QtNetwork>
 #include "filterthread.h"
 
 class QSqlTableModel;
