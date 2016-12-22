@@ -33,7 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableView->setColumnWidth(3,50);
     ui->tableView->setColumnWidth(4,74);
     ui->tableView->setColumnWidth(5,91);
-    ui->tableView->setColumnWidth(6,40);
+    ui->tableView->setColumnWidth(6,70);
+    ui->tableView->setColumnWidth(7,47);
 
     //only select by rows
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -118,6 +119,8 @@ void MainWindow::on_pushButton_toggled(bool checked)
 void MainWindow::onEnterPeriod(){
     qDebug()<<"receive enter signal";
     ui->startButtion->setEnabled(1);
+    startSystem();
+    ui->startButtion->setChecked(1);
 }
 
 void MainWindow::onLeavePeriod(){
@@ -138,26 +141,30 @@ void MainWindow::on_startButtion_toggled(bool checked)
     //TODO: add thread logic
     if(checked)
     {
-        //qDebug()<<"start pressed"<<endl;
-        filter.start();
-        ui->startButtion->setText("Stop System");
-
-        //set the output iptables
-        QString program = "iptables";
-        QStringList arguments;
-        arguments <<"-A" <<"OUTPUT" <<"-j"<<"QUEUE";
-        ipProcess.start(program, arguments);
-        ipProcess.waitForFinished();
-
-        QStringList inputArgus;
-        inputArgus<<"-A"<<"INPUT"<<"-j"<<"QUEUE";
-        ipProcess.start(program, inputArgus);
-        ipProcess.waitForFinished();
-        qDebug()<<"finish iptables set process";
+        startSystem();
     }
     else {
         endSystem();
     }
+}
+
+void MainWindow::startSystem(){
+    //qDebug()<<"start pressed"<<endl;
+    filter.start();
+    ui->startButtion->setText("Stop System");
+
+    //set the output iptables
+    QString program = "iptables";
+    QStringList arguments;
+    arguments <<"-A" <<"OUTPUT" <<"-j"<<"QUEUE";
+    ipProcess.start(program, arguments);
+    ipProcess.waitForFinished();
+
+    QStringList inputArgus;
+    inputArgus<<"-A"<<"INPUT"<<"-j"<<"QUEUE";
+    ipProcess.start(program, inputArgus);
+    ipProcess.waitForFinished();
+    qDebug()<<"finish iptables set process";
 }
 
 void MainWindow::endSystem()

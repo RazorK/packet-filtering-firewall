@@ -18,12 +18,12 @@ static bool createConnection()
     //  create the table for rules
     query.exec(QString("create table rule (id int primary key, "
                        "SourceIP varchar, DestinationIP varchar, Protocol varchar,"
-                       "SourcePort int, DestinationPort int,"
+                       "SourcePort int, DestinationPort int,IcmpType int,"
                        "Pass bool)"));
 
     // insert example rules
-    query.exec(QString("insert into rule values(1, '192.168.158.136','111.13.100.92', 'all','80','80', 0)"));
-    query.exec(QString("insert into rule values(2, '127.0.0.1','127.0.0.1', 'all','all','all', 0)"));
+    query.exec(QString("insert into rule values(1, '192.168.158.136','111.13.100.92', 'all','80','80','all', 0)"));
+    query.exec(QString("insert into rule values(2, '127.0.0.1','127.0.0.1', 'all','all','all','all', 0)"));
     return true;
 }
 

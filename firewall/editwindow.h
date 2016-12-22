@@ -32,6 +32,8 @@ private slots:
 
     void on_checkBox_2_stateChanged(int arg1);
 
+    void on_protoComoBox_currentIndexChanged(const QString &arg1);
+
 private:
     Ui::EditWindow *ui;
     QSqlTableModel *model;
@@ -41,6 +43,7 @@ private:
     QLineEdit *destinationPortLineEdit;
     QComboBox *passComboBox;
     QComboBox *protoComoBox;
+    QComboBox *icmpComboBox;
 
 };
 

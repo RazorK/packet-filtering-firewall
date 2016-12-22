@@ -18,13 +18,13 @@ FilterThread::FilterThread(QObject *parent) :
 }
 
 //icmp query and process
-int icmpQuery(char *srcstr, char *deststr,QString ippro)
+int icmpQuery(char *srcstr, char *deststr,QString ippro,int type)
 {
     QSqlQuery query;
     query.exec(QString("select * from rule where (SourceIP='%1' or SourceIP='all')"
                        "and (DestinationIP='%2' or DestinationIP = 'all') and "
-                       "(protocol = 'all' or protocol = '%3') and Pass = 0")
-               .arg(srcstr).arg(deststr).arg(ippro));
+                       "(protocol = 'all' or protocol = '%3') and (icmptype = 'all' or icmptype = '%4')and Pass = 0")
+               .arg(srcstr).arg(deststr).arg(ippro).arg(type));
 
     int dropflag = 0;
     while(query.next())
@@ -142,8 +142,11 @@ int callback(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg, struct nfq_data *n
     if(piphdr->protocol == 1)
     {
         ippro = "icmp";
+        struct icmphdr *picmphdr;
+        picmphdr = (struct icmphdr *)((char *)piphdr+(piphdr->ihl*4));
         qDebug()<<"ICMP protocol detected!"<<endl;
-        dealmethod = icmpQuery(srcstr,deststr,ippro);
+        qDebug()<<"icmp type"<<picmphdr->type<<endl;
+        dealmethod = icmpQuery(srcstr,deststr,ippro,picmphdr->type);
     }
 
     qDebug()<<"-------------------------------------------------------------------------";

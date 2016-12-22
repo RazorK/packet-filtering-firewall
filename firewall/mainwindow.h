@@ -60,6 +60,7 @@ private:
 
     //function
     void endSystem();
+    void startSystem();
 };
 
 #endif // MAINWINDOW_H

@@ -14,6 +14,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QSqlError>
+#include <QStringList>
 
 
 EditWindow::EditWindow(QWidget *parent) :
@@ -39,7 +40,14 @@ EditWindow::EditWindow(QWidget *parent) :
     protoComoBox->addItem("tcp");
     protoComoBox->addItem("icmp");
     protoComoBox->addItem("udp");
+    connect(protoComoBox,SIGNAL(currentIndexChanged(QString)),this,SLOT(on_protoComoBox_currentIndexChanged(QString)));
 
+    //icmp type
+    icmpComboBox = new QComboBox(this);
+    ui->formLayout->addRow("ICMP Type",icmpComboBox);
+    QStringList ls;
+    ls<<"all"<<"0-echo-reply"<<"8-echo-request"<<"11-TTL0";
+    icmpComboBox->addItems(ls);
 
     //port validator
     QValidator *vali =new QIntValidator(0,65535,this);
@@ -90,6 +98,15 @@ void EditWindow::on_buttonBox_accepted()
 
     record.setValue("Protocol",protoComoBox->currentText());
 
+    if(icmpComboBox->currentText()=="all")
+        record.setValue("icmptype","all");
+    else if(icmpComboBox->currentText()=="0-echo-reply")
+        record.setValue("icmptype",0);
+    else if(icmpComboBox->currentText()=="8-echo-request")
+        record.setValue("icmptype",8);
+    else if(icmpComboBox->currentText()=="11-TTL0")
+        record.setValue("icmptype",11);
+
     if(ui->checkBox_3->checkState()==2)
         record.setValue("SourcePort","all");
     else
@@ -137,4 +154,23 @@ void EditWindow::on_checkBox_2_stateChanged(int arg1)
         destinationEdit->setEnabled(1);
     else if(arg1==2)
         destinationEdit->setEnabled(0);
+}
+
+void EditWindow::on_protoComoBox_currentIndexChanged(const QString &str){
+    //qDebug()<<str<<endl;
+    if(str=="icmp"){
+        sourcePortLineEdit->setEnabled(0);
+        destinationPortLineEdit->setEnabled(0);
+    }
+    else{
+        sourcePortLineEdit->setEnabled(1);
+        sourcePortLineEdit->setEnabled(1);
+    }
+
+    if(str=="tcp" || str=="udp"){
+        icmpComboBox->setEnabled(0);
+    }
+    else{
+        icmpComboBox->setEnabled(1);
+    }
 }
