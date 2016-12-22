@@ -20,14 +20,16 @@ SOURCES += main.cpp\
     editwindow.cpp \
     myippartlineedit.cpp \
     myipaddredit.cpp \
-    filterthread.cpp
+    filterthread.cpp \
+    msghandlewapper.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
     editwindow.h \
     myippartlineedit.h \
     myipaddredit.h \
-    filterthread.h
+    filterthread.h \
+    msghandlewapper.h
 
 FORMS    += mainwindow.ui \
     editwindow.ui

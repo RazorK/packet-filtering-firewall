@@ -43,9 +43,6 @@ protected:
 private:
     volatile bool enable_flag;
 
-
-signals:
-
 public slots:
 
 };

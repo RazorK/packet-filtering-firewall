@@ -18,6 +18,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void pringMsg(QtMsgType q_type,const QString &msg);
+
 private slots:
     void on_addButton_clicked();
 

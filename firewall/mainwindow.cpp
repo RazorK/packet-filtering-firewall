@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "editwindow.h"
+#include "msghandlewapper.h"
 
 #include <QDialog>
 #include <QDebug>
@@ -48,6 +49,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //hide textedit
     ui->textEdit->setReadOnly(1);
     //ui->textEdit->hide();
+
+    connect(MsgHandlerWapper::instance(),SIGNAL(message(QtMsgType,QString)),SLOT(pringMsg(QtMsgType,QString)));
 }
 
 MainWindow::~MainWindow()
@@ -112,4 +115,9 @@ void MainWindow::on_startButtion_toggled(bool checked)
         }
     }
 
+}
+
+void MainWindow::pringMsg(QtMsgType q_type, const QString &msg)
+{
+    ui->textEdit->append(msg);
 }
