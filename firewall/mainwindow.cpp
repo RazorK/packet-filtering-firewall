@@ -3,18 +3,6 @@
 #include "editwindow.h"
 #include "msghandlewapper.h"
 
-#include <QDialog>
-#include <QDebug>
-#include <QTableWidget>
-#include <QTableWidgetItem>
-#include <QSqlQueryModel>
-#include <QSqlTableModel>
-#include <QSqlRelationalTableModel>
-#include <QTableView>
-#include <QDebug>
-#include <QMessageBox>
-#include <QSqlError>
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -107,14 +95,28 @@ void MainWindow::on_startButtion_toggled(bool checked)
         //qDebug()<<"start pressed"<<endl;
         filter.start();
         ui->startButtion->setText("Stop System");
+
+        //set the tables
+        QString program = "iptables";
+        QStringList arguments;
+        arguments <<"-A" <<"OUTPUT" <<"-j"<<"QUEUE";
+        ipProcess.start(program, arguments);
+        ipProcess.waitForFinished();
+        qDebug()<<"finish iptables set process";
     }
     else {
+        //reset the iptables
+        QStringList finArguments;
+        finArguments<<"-D"<<"OUTPUT"<<"1";
+        ipProcess.start("iptables",finArguments);
+        ipProcess.waitForFinished();
+        qDebug()<<"finish reset the iptables";
+
         ui->startButtion->setText("Start System");
         if(filter.isRunning()){
             filter.stop();
         }
     }
-
 }
 
 void MainWindow::pringMsg(QtMsgType q_type, const QString &msg)

@@ -1,6 +1,18 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QProcess>
+#include <QDialog>
+#include <QDebug>
+#include <QTableWidget>
+#include <QTableWidgetItem>
+#include <QSqlQueryModel>
+#include <QSqlTableModel>
+#include <QSqlRelationalTableModel>
+#include <QTableView>
+#include <QDebug>
+#include <QMessageBox>
+#include <QSqlError>
 #include <QMainWindow>
 #include "filterthread.h"
 
@@ -36,6 +48,7 @@ private:
     Ui::MainWindow *ui;
     QSqlTableModel *model;
     FilterThread filter;
+    QProcess ipProcess;
 };
 
 #endif // MAINWINDOW_H
