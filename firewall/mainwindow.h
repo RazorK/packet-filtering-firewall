@@ -34,6 +34,8 @@ public:
 
 public slots:
     void pringMsg(QtMsgType q_type,const QString &msg);
+    void onEnterPeriod();
+    void onLeavePeriod();
 
 private slots:
     void on_addButton_clicked();

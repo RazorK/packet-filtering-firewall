@@ -43,8 +43,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //ui->textEdit->hide();
 
     connect(MsgHandlerWapper::instance(),SIGNAL(message(QtMsgType,QString)),SLOT(pringMsg(QtMsgType,QString)));
-    //connect(timeTh,SIGNAL(enterPeriod()),this,SLOT(onEnterPeriod()));
-    //connect(timeTh,SIGNAL(leavePeriod()),this,SLOT(onLeavePeriod()));
+    connect(tm,SIGNAL(enterPeriod()),this,SLOT(onEnterPeriod()));
+    connect(tm,SIGNAL(leavePeriod()),this,SLOT(onLeavePeriod()));
 }
 
 MainWindow::~MainWindow()
@@ -113,6 +113,17 @@ void MainWindow::on_pushButton_toggled(bool checked)
         ui->startButtion->setEnabled(1);
         tm->stop();
     }
+}
+
+void MainWindow::onEnterPeriod(){
+    qDebug()<<"receive enter signal";
+    ui->startButtion->setEnabled(1);
+}
+
+void MainWindow::onLeavePeriod(){
+    qDebug()<<"receive leave signal";
+    endSystem();
+    ui->startButtion->setEnabled(0);
 }
 
 void MainWindow::on_infoButton_toggled(bool checked)

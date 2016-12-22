@@ -18,12 +18,13 @@ protected:
 
 private:
     volatile bool flag;
+    volatile bool in;
     QTime starttime;
     QTime endtime;
 
 signals:
-    //void enterPeriod();
-    //void leavePeriod();
+    void enterPeriod();
+    void leavePeriod();
 
 public slots:
 
