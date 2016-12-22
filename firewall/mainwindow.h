@@ -16,6 +16,7 @@
 #include <QMainWindow>
 #include <QtNetwork>
 #include "filterthread.h"
+#include "timer.h"
 
 class QSqlTableModel;
 
@@ -45,11 +46,18 @@ private slots:
 
     void on_startButtion_toggled(bool checked);
 
+signals:
+    void timeSet(QTime startTime,QTime endTime);
+
 private:
     Ui::MainWindow *ui;
     QSqlTableModel *model;
     FilterThread filter;
     QProcess ipProcess;
+    Timer *tm;
+
+    //function
+    void endSystem();
 };
 
 #endif // MAINWINDOW_H

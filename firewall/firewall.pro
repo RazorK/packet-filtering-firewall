@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     myippartlineedit.cpp \
     myipaddredit.cpp \
     filterthread.cpp \
-    msghandlewapper.cpp
+    msghandlewapper.cpp \
+    timer.cpp
 
 HEADERS  += mainwindow.h \
     connection.h \
@@ -30,7 +31,8 @@ HEADERS  += mainwindow.h \
     myippartlineedit.h \
     myipaddredit.h \
     filterthread.h \
-    msghandlewapper.h
+    msghandlewapper.h \
+    timer.h
 
 FORMS    += mainwindow.ui \
     editwindow.ui

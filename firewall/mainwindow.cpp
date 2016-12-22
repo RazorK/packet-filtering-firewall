@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    tm = new Timer(this);
     //fix the size of mainwindow
     setFixedSize(this->width(),this->height());
 
@@ -42,6 +43,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //ui->textEdit->hide();
 
     connect(MsgHandlerWapper::instance(),SIGNAL(message(QtMsgType,QString)),SLOT(pringMsg(QtMsgType,QString)));
+    //connect(timeTh,SIGNAL(enterPeriod()),this,SLOT(onEnterPeriod()));
+    //connect(timeTh,SIGNAL(leavePeriod()),this,SLOT(onLeavePeriod()));
 }
 
 MainWindow::~MainWindow()
@@ -81,6 +84,35 @@ void MainWindow::on_pushButton_toggled(bool checked)
     //TODO: Add time filter logic
     if(checked) ui->pushButton->setText("Stop Time Filter");
     else ui->pushButton->setText("Start Time Filter");
+    if(checked)
+    {
+        emit timeSet(ui->startTimeEdit->time(),ui->endTimeEdit->time());
+        tm->start();
+        bool inFlag = 0;
+        if((ui->startTimeEdit->time()<QTime::currentTime()) && (ui->endTimeEdit->time() > QTime::currentTime()))
+            inFlag = 1;
+        if(inFlag == 0)
+        {
+            if(filter.isRunning())
+            {
+                // close the system
+                endSystem();
+
+                //close the button
+                ui->startButtion->setEnabled(0);
+            }
+            else
+            {
+                ui->startButtion->setEnabled(0);
+            }
+        }
+    }
+    else
+    {
+        //close the thread
+        ui->startButtion->setEnabled(1);
+        tm->stop();
+    }
 }
 
 void MainWindow::on_infoButton_toggled(bool checked)
@@ -113,30 +145,36 @@ void MainWindow::on_startButtion_toggled(bool checked)
         qDebug()<<"finish iptables set process";
     }
     else {
-        ui->startButtion->setText("Start System");
-        if(filter.isRunning()){
-            filter.stop();
-        }
-        //try send package to end the recv proceed
-        qDebug()<<"start sweep sending";
-        QUdpSocket *sender;
-        sender = new QUdpSocket(this);
-        QByteArray datagram = "hello";
-        sender->writeDatagram(datagram.data(),datagram.size(),QHostAddress::Broadcast,45454);
-        qDebug()<<"finish sweep sending";
-
-        //reset the iptables
-        QStringList finArguments;
-        finArguments<<"-D"<<"OUTPUT"<<"1";
-        ipProcess.start("iptables",finArguments);
-        ipProcess.waitForFinished();
-
-        QStringList finInArgus;
-        finInArgus<<"-D"<<"INPUT"<<"1";
-        ipProcess.start("iptables",finInArgus);
-        ipProcess.waitForFinished();
-        qDebug()<<"finish reset the iptables";
+        endSystem();
     }
+}
+
+void MainWindow::endSystem()
+{
+    ui->startButtion->setText("Start System");
+    ui->startButtion->setChecked(0);
+    if(filter.isRunning()){
+        filter.stop();
+    }
+    //try send package to end the recv proceed
+    qDebug()<<"start sweep sending";
+    QUdpSocket *sender;
+    sender = new QUdpSocket(this);
+    QByteArray datagram = "hello";
+    sender->writeDatagram(datagram.data(),datagram.size(),QHostAddress::Broadcast,45454);
+    qDebug()<<"finish sweep sending";
+
+    //reset the iptables
+    QStringList finArguments;
+    finArguments<<"-D"<<"OUTPUT"<<"1";
+    ipProcess.start("iptables",finArguments);
+    ipProcess.waitForFinished();
+
+    QStringList finInArgus;
+    finInArgus<<"-D"<<"INPUT"<<"1";
+    ipProcess.start("iptables",finInArgus);
+    ipProcess.waitForFinished();
+    qDebug()<<"finish reset the iptables";
 }
 
 void MainWindow::pringMsg(QtMsgType q_type, const QString &msg)
