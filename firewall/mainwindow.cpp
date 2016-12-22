@@ -22,6 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
     model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     ui->tableView->setModel(model);
 
+    //read only
+    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
     //set the column width
     ui->tableView->setColumnWidth(0,30);
     ui->tableView->setColumnWidth(1,106);
@@ -96,11 +99,16 @@ void MainWindow::on_startButtion_toggled(bool checked)
         filter.start();
         ui->startButtion->setText("Stop System");
 
-        //set the tables
+        //set the output iptables
         QString program = "iptables";
         QStringList arguments;
         arguments <<"-A" <<"OUTPUT" <<"-j"<<"QUEUE";
         ipProcess.start(program, arguments);
+        ipProcess.waitForFinished();
+
+        QStringList inputArgus;
+        inputArgus<<"-A"<<"INPUT"<<"-j"<<"QUEUE";
+        ipProcess.start(program, inputArgus);
         ipProcess.waitForFinished();
         qDebug()<<"finish iptables set process";
     }
@@ -117,23 +125,17 @@ void MainWindow::on_startButtion_toggled(bool checked)
         sender->writeDatagram(datagram.data(),datagram.size(),QHostAddress::Broadcast,45454);
         qDebug()<<"finish sweep sending";
 
-        /*
-        qDebug()<<"try send a package";
-        QStringList secArguments;
-        secArguments<<"www.baidu,com";
-        ipProcess.start("ping",secArguments);
-        //ipProcess.waitForFinished();
-        qDebug()<<"finish sending";
-        */
         //reset the iptables
         QStringList finArguments;
         finArguments<<"-D"<<"OUTPUT"<<"1";
         ipProcess.start("iptables",finArguments);
         ipProcess.waitForFinished();
+
+        QStringList finInArgus;
+        finInArgus<<"-D"<<"INPUT"<<"1";
+        ipProcess.start("iptables",finInArgus);
+        ipProcess.waitForFinished();
         qDebug()<<"finish reset the iptables";
-        //change the flag
-
-
     }
 }
 

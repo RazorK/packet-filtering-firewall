@@ -57,7 +57,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QTimeEdit" name="timeEdit"/>
+             <widget class="QTimeEdit" name="startTimeEdit"/>
             </item>
            </layout>
           </item>
@@ -71,7 +71,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QTimeEdit" name="timeEdit_2"/>
+             <widget class="QTimeEdit" name="endTimeEdit"/>
             </item>
            </layout>
           </item>

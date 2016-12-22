@@ -112,8 +112,6 @@ int callback(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg, struct nfq_data *n
         return 1;
     inet_ntop(AF_INET,&(piphdr->saddr),srcstr,32);
     inet_ntop(AF_INET,&(piphdr->daddr),deststr,32);
-
-
     //output part
     //cout basic information
     qDebug()<<"--------------------------PACKAGE DETECTED-------------------------------";
@@ -210,14 +208,10 @@ void FilterThread::run()
         }
         qDebug()<<"doing circulation"<<endl;
         length=recv(fd,buf,1600,0);//此处完成收包
-        qDebug()<<"wait?"<<endl;
         nfq_handle_packet(h, buf,length);//完成发包的真正函数
     }
-
-    qDebug()<<"finish circulation"<<endl;
     nfq_destroy_queue(qh);
     nfq_close(h);
-
     qDebug()<<"run process stoped"<<endl;
 }
 
