@@ -132,6 +132,7 @@ void MainWindow::onLeavePeriod(){
 void MainWindow::on_infoButton_toggled(bool checked)
 {
     ui->textEdit->setVisible(!checked);
+    ui->clearButton->setVisible(!checked);
     if(checked) ui->infoButton->setText("Show Package Info");
     else ui->infoButton->setText("Hide Package Info");
 }
@@ -184,12 +185,12 @@ void MainWindow::endSystem()
 
     //reset the iptables
     QStringList finArguments;
-    finArguments<<"-D"<<"OUTPUT"<<"1";
+    finArguments<<"-F"<<"OUTPUT";
     ipProcess.start("iptables",finArguments);
     ipProcess.waitForFinished();
 
     QStringList finInArgus;
-    finInArgus<<"-D"<<"INPUT"<<"1";
+    finInArgus<<"-F"<<"INPUT";
     ipProcess.start("iptables",finInArgus);
     ipProcess.waitForFinished();
     qDebug()<<"finish reset the iptables";
@@ -198,4 +199,9 @@ void MainWindow::endSystem()
 void MainWindow::pringMsg(QtMsgType q_type, const QString &msg)
 {
     ui->textEdit->append(msg);
+}
+
+void MainWindow::on_clearButton_clicked()
+{
+    ui->textEdit->clear();
 }

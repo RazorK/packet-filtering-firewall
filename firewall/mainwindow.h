@@ -49,6 +49,8 @@ private slots:
 
     void on_startButtion_toggled(bool checked);
 
+    void on_clearButton_clicked();
+
 signals:
     void timeSet(QTime startTime,QTime endTime);
 

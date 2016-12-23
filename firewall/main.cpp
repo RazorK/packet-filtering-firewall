@@ -20,5 +20,17 @@ int main(int argc, char *argv[])
     w.show();
 
     a.exec();
+    QProcess ipProcess;
+    //reset the iptables
+    QStringList finArguments;
+    finArguments<<"-F"<<"OUTPUT";
+    ipProcess.start("iptables",finArguments);
+    ipProcess.waitForFinished();
+
+    QStringList finInArgus;
+    finInArgus<<"-F"<<"INPUT";
+    ipProcess.start("iptables",finInArgus);
+    ipProcess.waitForFinished();
+    qDebug()<<"finish reset the iptables";
     return 1;
 }
