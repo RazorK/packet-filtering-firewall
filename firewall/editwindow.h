@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QComboBox>
 #include <QLineEdit>
+#include <QSqlQuery>
 #include "myipaddredit.h"
 class QSqlTableModel;
 class MyIpAddrEdit;
@@ -32,7 +33,7 @@ private slots:
 
     void on_checkBox_2_stateChanged(int arg1);
 
-    void on_protoComoBox_currentIndexChanged(const QString &arg1);
+    void protoComoBox_currentIndexChanged(const QString &arg1);
 
 private:
     Ui::EditWindow *ui;

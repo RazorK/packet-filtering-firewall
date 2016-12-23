@@ -40,7 +40,7 @@ EditWindow::EditWindow(QWidget *parent) :
     protoComoBox->addItem("tcp");
     protoComoBox->addItem("icmp");
     protoComoBox->addItem("udp");
-    connect(protoComoBox,SIGNAL(currentIndexChanged(QString)),this,SLOT(on_protoComoBox_currentIndexChanged(QString)));
+    connect(protoComoBox,SIGNAL(currentIndexChanged(QString)),this,SLOT(protoComoBox_currentIndexChanged(QString)));
 
     //icmp type
     icmpComboBox = new QComboBox(this);
@@ -82,10 +82,14 @@ void EditWindow::on_buttonBox_accepted()
 {
     //get row number
     int rowNum = model->rowCount();
+    QSqlQuery query;
+    query.exec("select max(id) from rule");
+    query.next();
+    int m_id = query.value(0).toInt();
 
     //create record && insert to the db
     QSqlRecord record = model->record();
-    record.setValue("id",rowNum+1);
+    record.setValue("id",m_id+1);
     if(ui->checkBox->checkState()==2)
         record.setValue("SourceIP","all");
     else
@@ -156,7 +160,7 @@ void EditWindow::on_checkBox_2_stateChanged(int arg1)
         destinationEdit->setEnabled(0);
 }
 
-void EditWindow::on_protoComoBox_currentIndexChanged(const QString &str){
+void EditWindow::protoComoBox_currentIndexChanged(const QString &str){
     //qDebug()<<str<<endl;
     if(str=="icmp"){
         sourcePortLineEdit->setEnabled(0);
@@ -164,7 +168,7 @@ void EditWindow::on_protoComoBox_currentIndexChanged(const QString &str){
     }
     else{
         sourcePortLineEdit->setEnabled(1);
-        sourcePortLineEdit->setEnabled(1);
+        destinationPortLineEdit->setEnabled(1);
     }
 
     if(str=="tcp" || str=="udp"){

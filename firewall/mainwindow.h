@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QTableWidget>
 #include <QTableWidgetItem>
+#include <QSqlQuery>
 #include <QSqlQueryModel>
 #include <QSqlTableModel>
 #include <QSqlRelationalTableModel>
