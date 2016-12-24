@@ -205,3 +205,8 @@ void MainWindow::on_clearButton_clicked()
 {
     ui->textEdit->clear();
 }
+
+void MainWindow::on_importButton_clicked()
+{
+
+}

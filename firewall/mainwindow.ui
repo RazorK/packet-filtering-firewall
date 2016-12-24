@@ -130,9 +130,9 @@
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_2">
+           <widget class="QPushButton" name="importButton">
             <property name="text">
-             <string>Under Construction</string>
+             <string>Import</string>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -140,9 +140,9 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_3">
+           <widget class="QPushButton" name="exportButton">
             <property name="text">
-             <string>Under Construction</string>
+             <string>Export</string>
             </property>
            </widget>
           </item>

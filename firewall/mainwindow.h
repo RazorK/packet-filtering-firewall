@@ -51,6 +51,8 @@ private slots:
 
     void on_clearButton_clicked();
 
+    void on_importButton_clicked();
+
 signals:
     void timeSet(QTime startTime,QTime endTime);
 
