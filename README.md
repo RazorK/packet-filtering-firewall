@@ -4,9 +4,9 @@
 Qt/SQLite/NetFilter
 
 编译过程可使用QtCreator编译,也可使用命令行
-	sudo qmake && make
+`sudo qmake && make`
 来编译。
 
 运行则执行
-	sudo ./firewall
+`sudo ./firewall`
 即可。
